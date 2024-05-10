@@ -55,22 +55,22 @@ func RoomView(baserUrl string, roomId string, room model.Room) templ.Component {
 
 func copyRoomUrl(url string) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_copyRoomUrl_a2b0`,
-		Function: `function __templ_copyRoomUrl_a2b0(url){navigator.clipboard.writeText(url);
+		Name: `__templ_copyRoomUrl_c64c`,
+		Function: `function __templ_copyRoomUrl_c64c(url){navigator.clipboard.writeText(url);
 	var tooltip = document.getElementById("urlCopyTooltip");
     tooltip.innerHTML = "Copied: " + url;}`,
-		Call:       templ.SafeScript(`__templ_copyRoomUrl_a2b0`, url),
-		CallInline: templ.SafeScriptInline(`__templ_copyRoomUrl_a2b0`, url),
+		Call:       templ.SafeScript(`__templ_copyRoomUrl_c64c`, url),
+		CallInline: templ.SafeScriptInline(`__templ_copyRoomUrl_c64c`, url),
 	}
 }
 
 func outFunc() templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_outFunc_a8b9`,
-		Function: `function __templ_outFunc_a8b9(){var tooltip = document.getElementById("urlCopyTooltip");
+		Name: `__templ_outFunc_dc99`,
+		Function: `function __templ_outFunc_dc99(){var tooltip = document.getElementById("urlCopyTooltip");
   tooltip.innerHTML = "Copy Room URL to clipboard";}`,
-		Call:       templ.SafeScript(`__templ_outFunc_a8b9`),
-		CallInline: templ.SafeScriptInline(`__templ_outFunc_a8b9`),
+		Call:       templ.SafeScript(`__templ_outFunc_dc99`),
+		CallInline: templ.SafeScriptInline(`__templ_outFunc_dc99`),
 	}
 }
 
