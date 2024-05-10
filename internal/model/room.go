@@ -106,6 +106,31 @@ func (room Room) GetEstimates() []EstimateViewModel {
 	return resultList
 }
 
+func (room Room) GetAvgEstimate() string {
+	var validEstimates []Estimate
+	for _, estimate := range room.Estimates {
+		if estimate != nil {
+			validEstimates = append(validEstimates, *estimate)
+		}
+	}
+
+	if len(validEstimates) == 0 {
+		return ""
+	}
+
+	total := 0
+	for _, estimate := range validEstimates {
+		total += int(estimate)
+	}
+	avg := total / len(validEstimates)
+	if room.CurrentMode == StoryPointMode {
+		return strconv.Itoa(avg)
+	} else if room.CurrentMode == TimeMode {
+		return timeEstimateToString(avg)
+	}
+	return ""
+}
+
 type EstimateSortModel struct {
 	User          User
 	EstimateValue *int

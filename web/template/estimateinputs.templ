@@ -1,7 +1,7 @@
 package template
 
 templ ButtonGroup(room string, items []string) {
-    <div class="flex px-4 mt-1 w-full">
+    <div class="flex px-6 mt-1 w-full">
         <span class="isolate flex h-fit w-full bg-indigo-700/40 p-1 gap-1 rounded-md shadow-sm text-white text-sm font-bold">
             for _, item := range items {
                 <button
@@ -24,13 +24,14 @@ templ TextInput(roomId string, inputValue string, errorMsg *string, oob bool) {
         if oob {
             hx-swap-oob="#estimateInput"
         }
-        class="isolate flex h-fit px-4 mt-1 gap-1 text-white text-sm font-bold"
+        class="isolate flex h-fit px-6 mt-1 gap-1 text-white text-sm font-bold"
     >
         <form
               hx-put={ "/rooms/"+roomId+"/estimates" }
               hx-target="#estimates"
               hx-swap="outerHTML"
               method="PUT"
+              autocomplete="off"
               class="flex gap-2 justify-start w-full">
 
               <input
@@ -39,6 +40,7 @@ templ TextInput(roomId string, inputValue string, errorMsg *string, oob bool) {
                   name="value"
                   placeholder="1w 1d 1h 1m"
                   required
+                  autocomplete="false"
                   if errorMsg != nil {
                       aria-invalid="true"
                       aria-describedby="estimate-error"

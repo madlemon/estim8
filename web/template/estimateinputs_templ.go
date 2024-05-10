@@ -23,7 +23,7 @@ func ButtonGroup(room string, items []string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex px-4 mt-1 w-full\"><span class=\"isolate flex h-fit w-full bg-indigo-700/40 p-1 gap-1 rounded-md shadow-sm text-white text-sm font-bold\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex px-6 mt-1 w-full\"><span class=\"isolate flex h-fit w-full bg-indigo-700/40 p-1 gap-1 rounded-md shadow-sm text-white text-sm font-bold\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -96,7 +96,7 @@ func TextInput(roomId string, inputValue string, errorMsg *string, oob bool) tem
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" class=\"isolate flex h-fit px-4 mt-1 gap-1 text-white text-sm font-bold\"><form hx-put=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" class=\"isolate flex h-fit px-6 mt-1 gap-1 text-white text-sm font-bold\"><form hx-put=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -104,7 +104,7 @@ func TextInput(roomId string, inputValue string, errorMsg *string, oob bool) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#estimates\" hx-swap=\"outerHTML\" method=\"PUT\" class=\"flex gap-2 justify-start w-full\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#estimates\" hx-swap=\"outerHTML\" method=\"PUT\" autocomplete=\"off\" class=\"flex gap-2 justify-start w-full\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -123,7 +123,7 @@ func TextInput(roomId string, inputValue string, errorMsg *string, oob bool) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" name=\"value\" placeholder=\"1w 1d 1h 1m\" required")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" name=\"value\" placeholder=\"1w 1d 1h 1m\" required autocomplete=\"false\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -153,7 +153,7 @@ func TextInput(roomId string, inputValue string, errorMsg *string, oob bool) tem
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(*errorMsg)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web\template\estimateinputs.templ`, Line: 50, Col: 84}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web\template\estimateinputs.templ`, Line: 52, Col: 84}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {

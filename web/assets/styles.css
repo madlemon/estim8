@@ -903,6 +903,10 @@ html {
   align-items: center;
 }
 
+.items-baseline {
+  align-items: baseline;
+}
+
 .justify-start {
   justify-content: flex-start;
 }
@@ -925,6 +929,11 @@ html {
 
 .gap-4 {
   gap: 1rem;
+}
+
+.gap-x-2 {
+  -moz-column-gap: 0.5rem;
+       column-gap: 0.5rem;
 }
 
 .gap-x-6 {
@@ -1158,6 +1167,10 @@ html {
 
 .text-sm {
   font-size: 0.800rem;
+}
+
+.text-xl {
+  font-size: 1.250rem;
 }
 
 .font-bold {
