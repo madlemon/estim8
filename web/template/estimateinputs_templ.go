@@ -23,7 +23,7 @@ func ButtonGroup(room string, items []string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"isolate flex flex-col h-fit bg-indigo-700 dark:bg-indigo-700/40 p-1 gap-1 rounded-md shadow-sm text-white text-sm font-bold\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex px-4 mt-1 w-full\"><span class=\"isolate flex h-fit w-full bg-indigo-700/40 p-1 gap-1 rounded-md shadow-sm text-white text-sm font-bold\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -44,14 +44,14 @@ func ButtonGroup(room string, items []string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#estimates\" hx-swap=\"outerHTML\" class=\"relative text-right px-3 py-2 ring-white ring-inset bg-indigo-600 hover:bg-indigo-500  focus:z-10 rounded-md\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#estimates\" hx-swap=\"outerHTML\" class=\"relative text-center w-full px-3 py-2 ring-white ring-inset bg-indigo-600 hover:bg-indigo-500  focus:z-10 rounded-md\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(item)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web\template\estimateinputs.templ`, Line: 13, Col: 22}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web\template\estimateinputs.templ`, Line: 14, Col: 26}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -62,7 +62,7 @@ func ButtonGroup(room string, items []string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -96,7 +96,7 @@ func TextInput(roomId string, inputValue string, errorMsg *string, oob bool) tem
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" class=\"isolate flex flex-col h-fit bg-white dark:bg-gray-800 p-1 gap-1 rounded-md shadow-sm text-white text-sm font-bold\"><form hx-put=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" class=\"isolate flex h-fit px-4 mt-1 gap-1 text-white text-sm font-bold\"><form hx-put=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -104,11 +104,11 @@ func TextInput(roomId string, inputValue string, errorMsg *string, oob bool) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#estimates\" hx-swap=\"outerHTML\" method=\"PUT\" class=\"space-y-2\"><div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#estimates\" hx-swap=\"outerHTML\" method=\"PUT\" class=\"flex gap-2 justify-start w-full\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var4 = []any{"block w-full rounded-md border-0 pl-1.5 py-1.5 shadow-sm ring-1 ring-inset dark:bg-white/5 dark:text-white dark:ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6",
+		var templ_7745c5c3_Var4 = []any{"block flex-grow rounded-md border-0 pl-1.5 py-1.5 shadow-sm ring-1 ring-inset bg-gray-100 dark:bg-white/5 dark:text-white dark:ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6",
 			templ.KV("text-gray-900 ring-gray-300", errorMsg == nil),
 			templ.KV("text-red-900 ring-red-300", errorMsg != nil)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var4...)
@@ -141,7 +141,7 @@ func TextInput(roomId string, inputValue string, errorMsg *string, oob bool) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -153,7 +153,7 @@ func TextInput(roomId string, inputValue string, errorMsg *string, oob bool) tem
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(*errorMsg)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web\template\estimateinputs.templ`, Line: 48, Col: 84}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web\template\estimateinputs.templ`, Line: 50, Col: 84}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -164,7 +164,7 @@ func TextInput(roomId string, inputValue string, errorMsg *string, oob bool) tem
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"submit\" class=\"flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"submit\" class=\"rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

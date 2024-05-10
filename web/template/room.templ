@@ -23,11 +23,6 @@ script outFunc() {
 
 templ Room ( baserUrl string, roomId string, room model.Room) {
     <div class="flex gap-2 w-full">
-        if room.CurrentMode == model.StoryPointMode {
-            @ButtonGroup(roomId, []string{"0", "1", "2", "3", "5", "8", "13", "20", "40", "100"})
-        } else if room.CurrentMode == model.TimeMode {
-            @TextInput(roomId, "", nil, false)
-        }
         <div class="overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow w-full">
           <div class="flex justify-between gap-4 items-center border-b border-gray-200 dark:border-gray-600 w-full px-4 py-5 sm:px-6">
             <div class="inline-flex gap-4 items-center">
@@ -55,6 +50,11 @@ templ Room ( baserUrl string, roomId string, room model.Room) {
             </div>
             @RoomActionBar(roomId, room.ResultsVisible, templ.Attributes{})
           </div>
+          if room.CurrentMode == model.StoryPointMode {
+              @ButtonGroup(roomId, []string{"0", "1", "2", "3", "5", "8", "13", "20", "40", "100"})
+          } else if room.CurrentMode == model.TimeMode {
+              @TextInput(roomId, "", nil, false)
+          }
           @EstimateTable(roomId, room)
         </div>
     </div>

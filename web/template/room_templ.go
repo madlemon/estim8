@@ -87,22 +87,7 @@ func Room(baserUrl string, roomId string, room model.Room) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex gap-2 w-full\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		if room.CurrentMode == model.StoryPointMode {
-			templ_7745c5c3_Err = ButtonGroup(roomId, []string{"0", "1", "2", "3", "5", "8", "13", "20", "40", "100"}).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		} else if room.CurrentMode == model.TimeMode {
-			templ_7745c5c3_Err = TextInput(roomId, "", nil, false).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow w-full\"><div class=\"flex justify-between gap-4 items-center border-b border-gray-200 dark:border-gray-600 w-full px-4 py-5 sm:px-6\"><div class=\"inline-flex gap-4 items-center\"><h3 class=\"text-base font-semibold leading-6 text-gray-900 dark:text-gray-200\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex gap-2 w-full\"><div class=\"overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow w-full\"><div class=\"flex justify-between gap-4 items-center border-b border-gray-200 dark:border-gray-600 w-full px-4 py-5 sm:px-6\"><div class=\"inline-flex gap-4 items-center\"><h3 class=\"text-base font-semibold leading-6 text-gray-900 dark:text-gray-200\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -152,7 +137,7 @@ func Room(baserUrl string, roomId string, room model.Room) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(roomId)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `web\template\room.templ`, Line: 44, Col: 52}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `web\template\room.templ`, Line: 39, Col: 52}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -186,6 +171,17 @@ func Room(baserUrl string, roomId string, room model.Room) templ.Component {
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
+		}
+		if room.CurrentMode == model.StoryPointMode {
+			templ_7745c5c3_Err = ButtonGroup(roomId, []string{"0", "1", "2", "3", "5", "8", "13", "20", "40", "100"}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else if room.CurrentMode == model.TimeMode {
+			templ_7745c5c3_Err = TextInput(roomId, "", nil, false).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
 		templ_7745c5c3_Err = EstimateTable(roomId, room).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
