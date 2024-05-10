@@ -5,6 +5,7 @@ import (
 	petname "github.com/dustinkirkland/golang-petname"
 	"log"
 	"regexp"
+	"slices"
 	"sort"
 	"strconv"
 	"sync"
@@ -141,7 +142,7 @@ type EstimateViewModel struct {
 	EstimateString *string
 }
 
-func (room *Room) GetAvgEstimate() string {
+func (room *Room) getEstimatesWithValue() ([]Estimate, bool) {
 	room.mutex.RLock()
 	defer room.mutex.RUnlock()
 	var validEstimates []Estimate
@@ -152,6 +153,14 @@ func (room *Room) GetAvgEstimate() string {
 	}
 
 	if len(validEstimates) == 0 {
+		return nil, true
+	}
+	return validEstimates, false
+}
+
+func (room *Room) GetAvgEstimate() string {
+	validEstimates, noEstimates := room.getEstimatesWithValue()
+	if noEstimates {
 		return ""
 	}
 
@@ -166,6 +175,35 @@ func (room *Room) GetAvgEstimate() string {
 		return timeEstimateToString(avg)
 	}
 	return ""
+}
+
+func (room *Room) GetMedianEstimate() string {
+	validEstimates, noEstimates := room.getEstimatesWithValue()
+	if noEstimates {
+		return ""
+	}
+
+	slices.Sort(validEstimates)
+
+	median := 0
+	numOfEstimates := len(validEstimates)
+	if !isEven(numOfEstimates) {
+		middleIndex := (numOfEstimates - 1) / 2
+		median = int(validEstimates[middleIndex])
+	} else {
+		median = int(validEstimates[numOfEstimates/2])
+	}
+
+	if room.CurrentMode == StoryPointMode {
+		return strconv.Itoa(median)
+	} else if room.CurrentMode == TimeMode {
+		return timeEstimateToString(median)
+	}
+	return ""
+}
+
+func isEven(i int) bool {
+	return i%2 == 0
 }
 
 type ParsingError struct {
