@@ -15,6 +15,13 @@ air
 
 By default, the application runs on port 1234. You can access it via http://localhost:1234.
 
+## Main dependencies
+- [Echo](https://github.com/labstack/echo): Web framework for Go.
+- [htmx](https://htmx.org/): JavaScript library for creating dynamic HTML content.
+- [templ](https://github.com/a-h/templ): Custom HTML templates for UI rendering.
+- [Tailwind CSS](https://tailwindcss.com/): Utility-first CSS framework for styling.
+- [Air](https://github.com/cosmtrek/air): Live reload tool for Go applications.
+
 ## License
 
 This project is licensed under the GLWTS License - see the LICENSE file for details.
