@@ -83,48 +83,52 @@ func (room *Room) GetEstimates() []EstimateViewModel {
 		estimatesList = append(estimatesList, sortModel)
 	}
 
-	if room.ResultsVisible {
-		sort.Slice(estimatesList, func(a, b int) bool {
-			this := estimatesList[a]
-			that := estimatesList[b]
-
-			if this.EstimateValue == nil {
-				return false
-			}
-			if that.EstimateValue == nil {
-				return true
-			}
-
-			thisValue := *this.EstimateValue
-			thatValue := *that.EstimateValue
-			if thisValue == thatValue {
-				return this.User < that.User
-			}
-			return thisValue > thatValue
-		})
-	} else {
-		sort.Slice(estimatesList, func(a, b int) bool {
-			return estimatesList[a].User < estimatesList[b].User
-		})
-	}
+	sort.Slice(estimatesList, func(a, b int) bool {
+		this, that := estimatesList[a], estimatesList[b]
+		if room.ResultsVisible {
+			return compareByEstimateThenUser(this, that)
+		}
+		return this.User < that.User
+	})
 
 	var resultList []EstimateViewModel
+	mode := room.CurrentMode
 	for _, e := range estimatesList {
-		var viewModel = EstimateViewModel{}
-		viewModel.User = e.User
-		if e.EstimateValue != nil {
-			if room.CurrentMode == StoryPointMode {
-				displayString := strconv.Itoa(*e.EstimateValue)
-				viewModel.EstimateString = &displayString
-			} else if room.CurrentMode == TimeMode {
-				displayString := timeEstimateToString(*e.EstimateValue)
-				viewModel.EstimateString = &displayString
-			}
-
-		}
+		viewModel := createEstimateViewModel(e, mode)
 		resultList = append(resultList, viewModel)
 	}
 	return resultList
+}
+
+func compareByEstimateThenUser(this, that EstimateSortModel) bool {
+	if this.EstimateValue == nil {
+		return false
+	}
+	if that.EstimateValue == nil {
+		return true
+	}
+
+	thisValue, thatValue := *this.EstimateValue, *that.EstimateValue
+	if thisValue == thatValue {
+		return this.User < that.User
+	}
+	return thisValue > thatValue
+}
+
+func createEstimateViewModel(e EstimateSortModel, mode EstimationMode) EstimateViewModel {
+	var viewModel = EstimateViewModel{}
+	viewModel.User = e.User
+	if e.EstimateValue != nil {
+		if mode == StoryPointMode {
+			displayString := strconv.Itoa(*e.EstimateValue)
+			viewModel.EstimateString = &displayString
+		} else if mode == TimeMode {
+			displayString := timeEstimateToString(*e.EstimateValue)
+			viewModel.EstimateString = &displayString
+		}
+
+	}
+	return viewModel
 }
 
 type EstimateSortModel struct {
