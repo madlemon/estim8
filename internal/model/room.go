@@ -7,25 +7,32 @@ import (
 	"regexp"
 	"sort"
 	"strconv"
+	"sync"
 )
 
 type Room struct {
 	Estimates      map[User]*Estimate
 	ResultsVisible bool
 	CurrentMode    EstimationMode
+	mutex          *sync.RWMutex
 }
 
 func NewRoom(mode EstimationMode) (string, *Room) {
 	newRoom := new(Room)
 	newRoom.CurrentMode = mode
 	newRoom.Estimates = make(map[User]*Estimate)
+	newRoom.mutex = &sync.RWMutex{}
 
 	roomId := petname.Generate(2, "-")
+	Global.mutex.Lock()
+	defer Global.mutex.Unlock()
 	Global.Rooms[roomId] = newRoom
 	return roomId, newRoom
 }
 
 func (room *Room) AddUser(user User) {
+	room.mutex.Lock()
+	defer room.mutex.Unlock()
 	_, userPresent := room.Estimates[user]
 	if !userPresent {
 		room.Estimates[user] = nil
@@ -33,12 +40,16 @@ func (room *Room) AddUser(user User) {
 }
 
 func (room *Room) AddPointEstimate(user User, estimateValue int) {
+	room.mutex.Lock()
+	defer room.mutex.Unlock()
 	estimate := Estimate(estimateValue)
 	room.Estimates[user] = &estimate
 	log.Printf("New Estimates from %q: %d\n", user, estimate)
 }
 
 func (room *Room) AddTimeEstimate(user User, estimateString string) error {
+	room.mutex.Lock()
+	defer room.mutex.Unlock()
 	estimateValue, err := parseWorkTime(estimateString)
 	if err != nil {
 		return err
@@ -50,6 +61,8 @@ func (room *Room) AddTimeEstimate(user User, estimateString string) error {
 }
 
 func (room *Room) ClearEstimates() {
+	room.mutex.Lock()
+	defer room.mutex.Unlock()
 	for user := range room.Estimates {
 		room.Estimates[user] = nil
 	}
@@ -57,6 +70,8 @@ func (room *Room) ClearEstimates() {
 }
 
 func (room *Room) GetEstimates() []EstimateViewModel {
+	room.mutex.RLock()
+	defer room.mutex.RUnlock()
 	var estimatesList []EstimateSortModel
 	for user, estimate := range room.Estimates {
 		var sortModel = EstimateSortModel{}
@@ -123,6 +138,8 @@ type EstimateViewModel struct {
 }
 
 func (room *Room) GetAvgEstimate() string {
+	room.mutex.RLock()
+	defer room.mutex.RUnlock()
 	var validEstimates []Estimate
 	for _, estimate := range room.Estimates {
 		if estimate != nil {
