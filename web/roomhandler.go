@@ -162,7 +162,7 @@ func DeleteEstimates(c echo.Context) error {
 
 	room.ClearEstimates()
 	log.Printf("Estimates cleared in room: %q\n", roomId)
-
+	log.Printf("ResultsVisible: %b", room.ResultsVisible)
 	component := template.Room(Config.PublicUrl, roomId, *room)
 	return Render(component, c)
 }

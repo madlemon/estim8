@@ -25,20 +25,20 @@ func NewRoom(mode EstimationMode) (string, *Room) {
 	return roomId, newRoom
 }
 
-func (room Room) AddUser(user User) {
+func (room *Room) AddUser(user User) {
 	_, userPresent := room.Estimates[user]
 	if !userPresent {
 		room.Estimates[user] = nil
 	}
 }
 
-func (room Room) AddPointEstimate(user User, estimateValue int) {
+func (room *Room) AddPointEstimate(user User, estimateValue int) {
 	estimate := Estimate(estimateValue)
 	room.Estimates[user] = &estimate
 	log.Printf("New Estimates from %q: %d\n", user, estimate)
 }
 
-func (room Room) AddTimeEstimate(user User, estimateString string) error {
+func (room *Room) AddTimeEstimate(user User, estimateString string) error {
 	estimateValue, err := parseWorkTime(estimateString)
 	if err != nil {
 		return err
@@ -49,14 +49,14 @@ func (room Room) AddTimeEstimate(user User, estimateString string) error {
 	return nil
 }
 
-func (room Room) ClearEstimates() {
+func (room *Room) ClearEstimates() {
 	for user := range room.Estimates {
 		room.Estimates[user] = nil
 	}
 	room.ResultsVisible = false
 }
 
-func (room Room) GetEstimates() []EstimateViewModel {
+func (room *Room) GetEstimates() []EstimateViewModel {
 	var estimatesList []EstimateSortModel
 	for user, estimate := range room.Estimates {
 		var sortModel = EstimateSortModel{}
@@ -106,7 +106,7 @@ func (room Room) GetEstimates() []EstimateViewModel {
 	return resultList
 }
 
-func (room Room) GetAvgEstimate() string {
+func (room *Room) GetAvgEstimate() string {
 	var validEstimates []Estimate
 	for _, estimate := range room.Estimates {
 		if estimate != nil {
