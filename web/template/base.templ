@@ -1,0 +1,50 @@
+package template
+
+
+templ HeadAndBody() {
+	<!doctype html>
+    <html>
+    <head>
+      <meta charset="UTF-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <link href="/static/styles.css" rel="stylesheet"/>
+      <link rel="icon" type="image/x-icon" href="/static/favicon.ico"/>
+      <title>Estim8</title>
+      <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+    </head>
+    <body class="bg-gray-100 dark:bg-gray-900">
+        { children... }
+    </body>
+    </html>
+}
+
+templ Base() {
+	@HeadAndBody() {
+        <nav class="bg-gray-800">
+          <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div class="relative flex h-16 items-center justify-between">
+              <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                <div class="flex flex-shrink-0 items-center">
+                    <a href="/">
+                        @Logo()
+                    </a>
+                </div>
+              </div>
+              @SecondaryButton("Logout",
+                templ.Attributes{
+                    "hx-delete": "/users",
+                }) {
+                  @SignOutIcon()
+              }
+            </div>
+          </div>
+        </nav>
+
+        <div class="mx-auto max-w-7xl py-12 sm:px-6 lg:px-8">
+            <div class="container mx-auto" id="content">
+                { children... }
+            </div>
+        </div>
+    }
+}
+

@@ -1,0 +1,124 @@
+package template
+
+import (
+    "github.com/madlemon/estim8/internal/model"
+)
+
+templ RoomView ( baserUrl string, roomId string, room model.Room) {
+    @Base() {
+        @Room(baserUrl, roomId, room)
+    }
+}
+
+script copyRoomUrl(url string) {
+	navigator.clipboard.writeText(url);
+	var tooltip = document.getElementById("urlCopyTooltip");
+    tooltip.innerHTML = "Copied: " + url;
+}
+
+script outFunc() {
+  var tooltip = document.getElementById("urlCopyTooltip");
+  tooltip.innerHTML = "Copy Room URL to clipboard";
+}
+
+templ Room ( baserUrl string, roomId string, room model.Room) {
+    <div class="flex gap-2 w-full">
+        if room.CurrentMode == model.StoryPointMode {
+            @ButtonGroup(roomId, []string{"0", "1", "2", "3", "5", "8", "13", "20", "40", "100"})
+        } else if room.CurrentMode == model.TimeMode {
+            @TextInput(roomId, "", nil, false)
+        }
+        <div class="overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow w-full">
+          <div class="flex justify-between gap-4 items-center border-b border-gray-200 dark:border-gray-600 w-full px-4 py-5 sm:px-6">
+            <div class="inline-flex gap-4 items-center">
+                <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-gray-200">
+                    if room.CurrentMode == model.StoryPointMode {
+                        Story Point Poker Room
+                    } else if room.CurrentMode == model.TimeMode {
+                        Time estimation Room
+                    }
+                </h3>
+                <div
+                    onClick={ copyRoomUrl(baserUrl+"/rooms/"+roomId) }
+                    onmouseout={ outFunc() }
+                    class="group inline-flex gap-2 items-center px-2 py-1 text-xs text-gray-600 dark:text-gray-400 fill-gray-600 dark:fill-gray-400 rounded-md bg-gray-50 dark:bg-gray-400/10 ring-1 ring-inset ring-gray-500/10 dark:ring-gray-400/20 cursor-pointer hover:text-gray-900 hover:fill-gray-900 dark:hover:text-gray-200 dark:hover:fill-gray-200">
+                    <span class="font-mono">{ roomId }</span>
+                    @ShareIcon()
+                    <div class="relative inline-block w-max">
+                        <span id="urlCopyTooltip"
+                            class="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-300 ease-in-out absolute z-100 w-max bottom-[-14px] left-3 px-2 py-1 bg-gray-800 dark:bg-gray-400/10 text-xs font-medium text-gray-200 rounded-md"
+                            >
+                            Copy Room URL to clipboard
+                        </span>
+                    </div>
+                </div>
+            </div>
+            @RoomActionBar(roomId, room.ResultsVisible, templ.Attributes{})
+          </div>
+          @EstimateTable(roomId, room)
+        </div>
+    </div>
+}
+
+templ RoomActionBar (roomId string, resultsVisible bool, attrs templ.Attributes) {
+    <div id="room-action-bar"
+        class="inline-flex gap-4 items-center"
+        { attrs... }>
+        @DeleteButton("Reset Estimates",
+            templ.Attributes{
+                "hx-delete": "/rooms/"+roomId+"/estimates",
+                "hx-target": "#content",
+                "hx-confirm": "Are you sure?",
+        })
+        @ToggleButton("Show Results",
+            resultsVisible,
+            templ.Attributes{
+                "name": "resultsVisible",
+                "hx-put": "/rooms/"+roomId+"/result-visibility",
+                "hx-target": "#content",
+        })
+    </div>
+}
+
+templ EstimateTable (roomId string, room model.Room) {
+    <div
+        id="estimates"
+        hx-get={ "/rooms/"+roomId+"/estimates" }
+        hx-trigger="every 2s"
+        hx-target="#estimates"
+        hx-swap="outerHTML"
+        class="px-4 py-5 sm:p-6 flex flex-col gap-2 w-1/2">
+      <table class="divide-y divide-gray-300 dark:divide-gray-600">
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
+              for _, estimateData := range room.GetEstimates() {
+                  <tr>
+                      <td class="whitespace-nowrap py-5 pl-4 pr-3 text-s font-bold text-gray-900 dark:text-gray-200 sm:pl-0">{ string(estimateData.User) }</td>
+                      <td class="whitespace-nowrap py-4 px-3  text-s font-bold text-indigo-700" align="right">
+                        if estimateData.EstimateString != nil {
+                          <span class="inline-flex items-center rounded-md px-2 py-1 ring-1 ring-inset bg-indigo-50 ring-indigo-700/10 dark:bg-indigo-400/10 dark:text-indigo-400 dark:ring-indigo-400/30">
+                              if room.ResultsVisible {
+                                 { *estimateData.EstimateString }
+                              } else {
+                               -
+                              }
+                          </span>
+                        }
+                      </td>
+                  </tr>
+              }
+          </tbody>
+      </table>
+    </div>
+}
+
+templ EstimatesPollResponse (roomId string, room model.Room) {
+    @RoomActionBar(roomId, room.ResultsVisible, templ.Attributes{"hx-swap-oob": "#room-action-bar"})
+    @EstimateTable(roomId, room)
+}
+
+templ EstimatesAndTextInput (roomId string, room model.Room, inputValue string, errorMsg *string) {
+    @TextInput(roomId, inputValue, errorMsg, true)
+    @EstimateTable(roomId, room)
+}
+
+

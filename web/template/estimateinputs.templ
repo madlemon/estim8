@@ -1,0 +1,61 @@
+package template
+
+templ ButtonGroup(room string, items []string) {
+    <span class="isolate flex flex-col h-fit bg-indigo-700 dark:bg-indigo-700/40 p-1 gap-1 rounded-md shadow-sm text-white text-sm font-bold">
+        for _, item := range items {
+            <button
+                type="button"
+                name="value"
+                value={ item }
+                hx-put={ "/rooms/"+room+"/estimates" }
+                hx-target="#estimates"
+                hx-swap="outerHTML"
+                class="relative text-right px-3 py-2 ring-white ring-inset bg-indigo-600 hover:bg-indigo-500  focus:z-10 rounded-md">
+                { item }
+            </button>
+        }
+    </span>
+}
+
+templ TextInput(roomId string, inputValue string, errorMsg *string, oob bool) {
+    <span id="estimateInput"
+        if oob {
+            hx-swap-oob="#estimateInput"
+        }
+        class="isolate flex flex-col h-fit bg-white dark:bg-gray-800 p-1 gap-1 rounded-md shadow-sm text-white text-sm font-bold"
+    >
+        <form
+              hx-put={ "/rooms/"+roomId+"/estimates" }
+              hx-target="#estimates"
+              hx-swap="outerHTML"
+              method="PUT"
+              class="space-y-2">
+            <div>
+                <input
+                    id="estimateInput"
+                    value={ inputValue }
+                    name="value"
+                    placeholder="1w 1d 1h 1m"
+                    required
+                    if errorMsg != nil {
+                        aria-invalid="true"
+                        aria-describedby="estimate-error"
+                    }
+                    class={"block w-full rounded-md border-0 pl-1.5 py-1.5 shadow-sm ring-1 ring-inset dark:bg-white/5 dark:text-white dark:ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6",
+                        templ.KV("text-gray-900 ring-gray-300", errorMsg == nil),
+                        templ.KV("text-red-900 ring-red-300", errorMsg != nil)}></input>
+            </div>
+            if errorMsg != nil {
+                <p class="mt-2 text-sm text-red-600" id="estimate-error">{ *errorMsg }</p>
+            }
+            <button type="submit"
+                class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                Submit estimate
+            </button>
+            <div class="text-sm text-gray-500">
+                <p>1 week = 5 days</p>
+                <p>1 day = 8 hours</p>
+            </div>
+        </form>
+    </span>
+}
