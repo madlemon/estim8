@@ -70,15 +70,22 @@ func (room *Room) GetEstimates() []EstimateViewModel {
 
 	if room.ResultsVisible {
 		sort.Slice(estimatesList, func(a, b int) bool {
-			if estimatesList[a].EstimateValue == nil {
+			this := estimatesList[a]
+			that := estimatesList[b]
+
+			if this.EstimateValue == nil {
 				return false
 			}
-			if estimatesList[b].EstimateValue == nil {
+			if that.EstimateValue == nil {
 				return true
 			}
-			valueA := *estimatesList[a].EstimateValue
-			valueB := *estimatesList[b].EstimateValue
-			return valueA > valueB
+
+			thisValue := *this.EstimateValue
+			thatValue := *that.EstimateValue
+			if thisValue == thatValue {
+				return this.User < that.User
+			}
+			return thisValue > thatValue
 		})
 	} else {
 		sort.Slice(estimatesList, func(a, b int) bool {
@@ -102,8 +109,17 @@ func (room *Room) GetEstimates() []EstimateViewModel {
 		}
 		resultList = append(resultList, viewModel)
 	}
-
 	return resultList
+}
+
+type EstimateSortModel struct {
+	User          User
+	EstimateValue *int
+}
+
+type EstimateViewModel struct {
+	User           User
+	EstimateString *string
 }
 
 func (room *Room) GetAvgEstimate() string {
@@ -129,16 +145,6 @@ func (room *Room) GetAvgEstimate() string {
 		return timeEstimateToString(avg)
 	}
 	return ""
-}
-
-type EstimateSortModel struct {
-	User          User
-	EstimateValue *int
-}
-
-type EstimateViewModel struct {
-	User           User
-	EstimateString *string
 }
 
 type ParsingError struct {
